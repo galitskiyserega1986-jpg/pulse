@@ -809,7 +809,7 @@ const friendProfile = (id: "kristina" | "yana" | "lenya", firstName: string, las
     { name: "Яна Миронова", desc: "Сестра", initials: "ЯМ", color: "#ec4899", online: true },
     { name: "Кристина Белова", desc: "Подруга", initials: "КБ", color: "#8b5cf6", online: false },
   ],
-  photos: [{ src: avatar }, { src: LOLA_STUDIO }, { src: LOLA_VASES }],
+  photos: [{ src: avatar }, { src: LOLA_STUDIO }, { src: lolaVases }],
 });
 
 export const KRISTINA_PROFILE = friendProfile("kristina", "Кристина", "Белова", "/images/kristina-avatar.svg", "Люблю моменты, которые хочется запомнить ✨", "Москва", "Бьюти-блог и контент", "РГУ им. Косыгина", ["Делюсь находками, музыкой и кусочками своей жизни.", "Всегда за красивые планы и хорошую компанию ✨"], "#f472b6", "#8b5cf6");
