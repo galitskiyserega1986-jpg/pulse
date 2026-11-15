@@ -50,10 +50,9 @@ export default function App() {
     <ProfileShell
       key={screen.user}
       profile={profile}
-      welcome={screen.welcome ? screen.user : null}
+      welcome={screen.welcome && (screen.user === "lola" || screen.user === "viktor") ? screen.user : null}
       onCloseWelcome={() => setScreen({ name: "profile", user: screen.user, welcome: false })}
       onLogout={() => setScreen({ name: "login" })}
-      onOpenProfile={(user) => setScreen({ name: "profile", user, welcome: false })}
     />
   );
 }
