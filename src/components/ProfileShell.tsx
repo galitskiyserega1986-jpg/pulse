@@ -43,8 +43,8 @@ import {
   Info,
   X,
 } from "lucide-react";
+import { KRISTINA_PROFILE, LENYA_PROFILE, LOLA_AVATAR, VIKTOR_AVATAR, YANA_PROFILE, YANA_AVATAR, KRISTINA_AVATAR, LENYA_AVATAR } from "../game/profiles";
 import type { ProfileData } from "../game/profiles";
-import { LOLA_AVATAR, VIKTOR_AVATAR } from "../game/profiles";
 
 type Tab = "profile" | "messages" | "photos";
 
@@ -70,6 +70,17 @@ export function ProfileShell({
   const [newPost, setNewPost] = useState("");
   const [extraPosts, setExtraPosts] = useState<{ id: string; text: string; time: string }[]>([]);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [viewedProfile, setViewedProfile] = useState<ProfileData | null>(null);
+  const pageProfile = viewedProfile ?? profile;
+
+  const openFriendPage = (name: string) => {
+    const normalized = name.toLowerCase();
+    const friend = normalized.includes("кристин") ? KRISTINA_PROFILE : normalized.includes("ян") ? YANA_PROFILE : normalized.includes("лён") || normalized.includes("леон") || normalized.includes("лен") ? LENYA_PROFILE : null;
+    if (!friend) return;
+    setViewedProfile(friend);
+    setTab("profile");
+  };
+  const goToMyPage = () => { setViewedProfile(null); setTab("profile"); };
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const active = dialogs.find((d) => d.id === activeId) ?? dialogs[0];
@@ -128,9 +139,10 @@ export function ProfileShell({
         <img src={VIKTOR_AVATAR} alt="" className="w-full h-full object-cover" />
       );
     if (profile.id === "viktor" && dialogId === "d-lola")
-      return (
-        <img src={LOLA_AVATAR} alt="" className="w-full h-full object-cover" />
-      );
+      return <img src={LOLA_AVATAR} alt="" className="w-full h-full object-cover" />;
+    if (dialogId === "d-kristina") return <img src={KRISTINA_AVATAR} alt="" className="w-full h-full object-cover" />;
+    if (dialogId === "d-yana") return <img src={YANA_AVATAR} alt="" className="w-full h-full object-cover" />;
+    if (dialogId === "d-leonid") return <img src={LENYA_AVATAR} alt="" className="w-full h-full object-cover" />;
     return (
       <div
         className="w-full h-full flex items-center justify-center text-white font-extrabold"
@@ -165,7 +177,7 @@ export function ProfileShell({
       {/* header */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-purple-950/5">
         <div className="max-w-[1100px] mx-auto px-3 sm:px-4 h-[54px] flex items-center gap-3">
-          <div className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={() => setTab("profile")}>
+          <div className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={goToMyPage}>
             <div className="w-8 h-8 rounded-[10px] bg-gradient-to-br from-[#8b5cf6] to-[#6d28d9] flex items-center justify-center shadow-[0_3px_10px_rgba(124,58,237,.35)]">
               <Activity className="w-5 h-5 text-white" strokeWidth={2.8} />
             </div>
@@ -245,7 +257,7 @@ export function ProfileShell({
                   <button
                     key={i + n.label}
                     type="button"
-                    onClick={() => setTab(target)}
+                    onClick={() => target === "profile" ? goToMyPage() : setTab(target)}
                     className={`w-full flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium transition ${
                       isActive
                         ? "bg-white shadow-sm text-[#1e1b2e] font-semibold"
@@ -289,40 +301,41 @@ export function ProfileShell({
         <main className="flex-1 min-w-0">
           {tab === "profile" && (
             <div className="space-y-4 animate-fade-up">
+              {viewedProfile && <button onClick={goToMyPage} className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#6b6580] shadow-sm hover:text-[#7c3aed]">← На мою страницу · {profile.firstName}</button>}
               {/* cover + info */}
               <div className="bg-white rounded-[16px] border border-purple-950/5 overflow-hidden shadow-sm">
                 <div
-                  className="h-[150px] sm:h-[190px] relative"
-                  style={{ background: `linear-gradient(120deg, ${profile.coverFrom}, ${profile.coverTo})` }}
+                  className="h-[140px] sm:h-[170px] relative"
+                  style={{ background: `linear-gradient(120deg, ${pageProfile.coverFrom}, ${pageProfile.coverTo})` }}
                 >
                   <div className="absolute inset-0 cover-pattern" />
-                  <div className="absolute -right-6 -bottom-10 text-[130px] opacity-20 select-none">{profile.coverEmoji}</div>
+                  <div className="absolute -right-6 -bottom-10 text-[130px] opacity-20 select-none">{pageProfile.coverEmoji}</div>
                   <div className="absolute top-3 right-3 flex gap-2">
                     <div className="flex items-center gap-1.5 bg-black/25 backdrop-blur text-white text-[12.5px] font-semibold px-3 py-1.5 rounded-full cursor-default select-none">
                       <Camera className="w-3.5 h-3.5" /> Обложка профиля
                     </div>
                   </div>
                 </div>
-                <div className="px-4 sm:px-5 pb-4">
-                  <div className="flex flex-col sm:flex-row sm:items-end gap-4 -mt-10 sm:-mt-12">
-                    <div className="relative shrink-0">
+                <div className="relative z-10 px-4 sm:px-5 pb-4">
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-4">
+                    <div className="relative shrink-0 -mt-10 sm:mt-0 sm:-translate-y-12">
                       <img
-                        src={profile.avatar}
+                        src={pageProfile.avatar}
                         alt=""
-                        onClick={() => setLightboxSrc(profile.avatar)}
+                        onClick={() => setLightboxSrc(pageProfile.avatar)}
                         className="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] rounded-full object-cover border-4 border-white shadow-lg cursor-pointer"
                       />
-                      <span className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-[#22c55e] border-[3px] border-white online-dot" />
+                      {pageProfile.onlineText === "online" && <span className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-[#22c55e] border-[3px] border-white online-dot" />}
                     </div>
                     <div className="flex-1 min-w-0 sm:pb-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <h1 className="text-[21px] sm:text-[23px] font-extrabold text-[#1e1b2e] tracking-tight">
-                          {profile.firstName} {profile.lastName}
+                          {pageProfile.firstName} {pageProfile.lastName}
                         </h1>
                         <BadgeCheck className="w-5 h-5 text-[#7c3aed]" />
                       </div>
-                      <div className="text-[13px] text-[#6b6580] mt-0.5 leading-snug max-w-[520px]">{profile.status}</div>
-                      <div className="text-[12.5px] text-[#22c55e] font-medium mt-1">{profile.onlineText}</div>
+                      <div className="text-[13px] text-[#6b6580] mt-0.5 leading-snug max-w-[520px]">{pageProfile.status}</div>
+                      <div className={`text-[12.5px] font-medium mt-1 ${pageProfile.onlineText === "online" ? "text-[#22c55e]" : "text-[#9b95b0]"}`}>{pageProfile.onlineText}</div>
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <button
@@ -338,21 +351,21 @@ export function ProfileShell({
                   </div>
 
                   <div className="mt-4 grid sm:grid-cols-2 gap-x-8 gap-y-2 text-[13.5px] border-t border-purple-950/5 pt-4">
-                    <InfoRow icon={MapPin} label="Город:" value={profile.city} />
-                    <InfoRow icon={Cake} label="День рождения:" value={profile.birthday} />
-                    <InfoRow icon={Briefcase} label="Работа:" value={profile.work} />
-                    <InfoRow icon={GraduationCap} label="Образование:" value={profile.education} />
+                    <InfoRow icon={MapPin} label="Город:" value={pageProfile.city} />
+                    <InfoRow icon={Cake} label="День рождения:" value={pageProfile.birthday} />
+                    <InfoRow icon={Briefcase} label="Работа:" value={pageProfile.work} />
+                    <InfoRow icon={GraduationCap} label="Образование:" value={pageProfile.education} />
                   </div>
 
                   <div className="mt-3 flex gap-5 text-[13px] border-t border-purple-950/5 pt-3">
                     <span className="cursor-default select-none">
-                      <b className="text-[#1e1b2e]">{profile.friendsCount}</b> <span className="text-[#6b6580]">друзей</span>
+                      <b className="text-[#1e1b2e]">{pageProfile.friendsCount}</b> <span className="text-[#6b6580]">друзей</span>
                     </span>
                     <span className="cursor-default select-none">
-                      <b className="text-[#1e1b2e]">{profile.followers}</b> <span className="text-[#6b6580]">подписчиков</span>
+                      <b className="text-[#1e1b2e]">{pageProfile.followers}</b> <span className="text-[#6b6580]">подписчиков</span>
                     </span>
                     <button onClick={() => setTab("photos")} className="hover:underline">
-                      <b className="text-[#1e1b2e]">{profile.photosCount}</b> <span className="text-[#6b6580]">фотографий</span>
+                      <b className="text-[#1e1b2e]">{pageProfile.photosCount}</b> <span className="text-[#6b6580]">фотографий</span>
                     </button>
                   </div>
                 </div>
@@ -363,11 +376,11 @@ export function ProfileShell({
                 <div className="flex gap-3 overflow-x-auto no-scrollbar">
                   <div className="shrink-0 w-[86px] text-center cursor-default select-none">
                     <div className="w-[64px] h-[64px] mx-auto rounded-full p-[2.5px] bg-gradient-to-tr from-[#7c3aed] to-[#ec4899]">
-                      <img src={profile.avatar} alt="" className="w-full h-full rounded-full object-cover border-[2.5px] border-white" />
+                      <img src={pageProfile.avatar} alt="" className="w-full h-full rounded-full object-cover border-[2.5px] border-white" />
                     </div>
                     <div className="mt-1.5 text-[11.5px] font-semibold text-[#1e1b2e] leading-tight">Моя история</div>
                   </div>
-                  {profile.friends.slice(0, 5).map((f) => (
+                  {pageProfile.friends.slice(0, 5).map((f) => (
                     <div key={f.name} className="shrink-0 w-[86px] text-center cursor-default select-none">
                       <div className="w-[64px] h-[64px] mx-auto rounded-full p-[2.5px] bg-gradient-to-tr from-[#a855f7] via-[#d946ef] to-[#f472b6]">
                         <div className="w-full h-full rounded-full border-[2.5px] border-white overflow-hidden">
@@ -382,10 +395,10 @@ export function ProfileShell({
                 </div>
               </div>
 
-              {/* new post */}
-              <div className="bg-white rounded-[16px] border border-purple-950/5 p-3.5 shadow-sm">
+              {/* posting is only available on the signed-in user's own page */}
+              {!viewedProfile && <div className="bg-white rounded-[16px] border border-purple-950/5 p-3.5 shadow-sm">
                 <div className="flex gap-2.5">
-                  <img src={profile.avatar} alt="" className="w-9 h-9 rounded-full object-cover shrink-0" />
+                  <img src={pageProfile.avatar} alt="" className="w-9 h-9 rounded-full object-cover shrink-0" />
                   <input
                     value={newPost}
                     onChange={(e) => setNewPost(e.target.value)}
@@ -404,13 +417,13 @@ export function ProfileShell({
                     </span>
                   ))}
                 </div>
-              </div>
+              </div>}
 
               {/* posts */}
-              {extraPosts.map((p) => (
+              {!viewedProfile && extraPosts.map((p) => (
                 <PostCard
                   key={p.id}
-                  profile={profile}
+                  profile={pageProfile}
                   text={p.text}
                   time={p.time}
                   likes={0}
@@ -423,10 +436,10 @@ export function ProfileShell({
                   onImageClick={setLightboxSrc}
                 />
               ))}
-              {profile.posts.map((p) => (
+              {pageProfile.posts.map((p) => (
                 <PostCard
                   key={p.id}
-                  profile={profile}
+                  profile={pageProfile}
                   text={p.text}
                   time={p.time}
                   likes={p.likes + (liked.has(p.id) ? 1 : 0)}
@@ -463,8 +476,11 @@ export function ProfileShell({
                   {filteredDialogs.map((d) => {
                     const last = d.messages[d.messages.length - 1];
                     return (
-                      <button
+                      <div
                         key={d.id}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { setActiveId(d.id); setDialogs((prev) => prev.map((x) => (x.id === d.id ? { ...x, unread: 0 } : x))); } }}
                         onClick={() => {
                           setActiveId(d.id);
                           setDialogs((prev) => prev.map((x) => (x.id === d.id ? { ...x, unread: 0 } : x)));
@@ -490,7 +506,7 @@ export function ProfileShell({
                             )}
                           </div>
                         </div>
-                      </button>
+                      </div>
                     );
                   })}
                 </div>
@@ -503,15 +519,15 @@ export function ProfileShell({
                     <button className="md:hidden w-8 h-8 rounded-full hover:bg-purple-500/10 flex items-center justify-center" onClick={() => setActiveId("")}>
                       <ArrowLeft className="w-5 h-5" />
                     </button>
-                    <div className="w-9 h-9 rounded-full overflow-hidden shrink-0">
+                    <button onClick={() => openFriendPage(active.name)} className="w-9 h-9 rounded-full overflow-hidden shrink-0" aria-label={`Профиль: ${active.name}`}>
                       {avatarFor(active.id, active.initials, active.color)}
-                    </div>
-                    <div className="min-w-0">
+                    </button>
+                    <button onClick={() => openFriendPage(active.name)} className="min-w-0 text-left">
                       <div className="font-bold text-[14px] text-[#1e1b2e] truncate">{active.name}</div>
                       <div className={`text-[12px] ${active.online ? "text-[#22c55e]" : "text-[#9b95b0]"}`}>
                         {active.online ? "online" : active.lastOnline ?? "был(а) недавно"}
                       </div>
-                    </div>
+                    </button>
                     <div className="ml-auto flex gap-1 text-[#6b6580]">
                       <div className="w-9 h-9 rounded-full flex items-center justify-center cursor-default"><PhoneCall className="w-[18px] h-[18px]" /></div>
                       <div className="w-9 h-9 rounded-full hidden sm:flex items-center justify-center cursor-default"><Video className="w-[18px] h-[18px]" /></div>
@@ -584,7 +600,7 @@ export function ProfileShell({
           {tab === "photos" && (
             <div className="bg-white rounded-[16px] border border-purple-950/5 shadow-sm p-4 sm:p-5 animate-fade-up">
               <div className="flex items-center gap-2 mb-4">
-                <h2 className="font-extrabold text-[17px] text-[#1e1b2e]">Фотографии</h2>
+                <h2 className="font-extrabold text-[17px] text-[#1e1b2e]">Фотографии {profile.firstName}</h2>
                 <span className="text-[13px] text-[#9b95b0] font-medium">{profile.photos.length}</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -623,7 +639,7 @@ export function ProfileShell({
                 <button
                   key={n.t}
                   type="button"
-                  onClick={() => setTab(target)}
+                  onClick={() => target === "profile" ? goToMyPage() : setTab(target)}
                   className={`flex-1 flex flex-col items-center gap-[2px] py-2 relative ${tab === target ? "text-[#7c3aed]" : "text-[#9b95b0]"}`}
                 >
                   <n.icon className="w-[22px] h-[22px]" />
@@ -712,6 +728,7 @@ export function ProfileShell({
           </div>
         </div>
       )}
+
     </div>
   );
 }

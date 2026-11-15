@@ -1,13 +1,16 @@
-import lolaAvatar from "../../public/images/lola.jpg?inline";
-import viktorAvatar from "../../public/images/viktor.jpg?inline";
-import lolaStudio from "../../public/images/lola-studio.jpg?inline";
-import lolaVases from "../../public/images/lola-vases.jpg?inline";
-import lolaMugs from "../../public/images/lola-mugs.jpg?inline";
-import perfumeImg from "../../public/images/perfume.jpg?inline";
-import fishImg from "../../public/images/fish.jpg?inline";
+const lolaAvatar = "/images/lolaavatarka.jpg";
+const viktorAvatar = "/images/viktoravatarka.jpg";
+const lolaStudio = "/images/lola-studio.jpg";
+const lolaVases = "/images/lola-vases.jpg";
+const lolaMugs = "/images/lola-mugs.jpg";
+const perfumeImg = "/images/perfume.jpg";
+const fishImg = "/images/fish.jpg";
 
 export const LOLA_AVATAR = lolaAvatar;
 export const VIKTOR_AVATAR = viktorAvatar;
+export const KRISTINA_AVATAR = "/images/kristinaavatarka.jpg";
+export const YANA_AVATAR = "/images/ianaavatarka.jpg";
+export const LENYA_AVATAR = "/images/leonidavatarka.jpg";
 export const LOLA_STUDIO = lolaStudio;
 
 export interface ChatMessage {
@@ -54,7 +57,7 @@ export interface Friend {
 }
 
 export interface ProfileData {
-  id: "lola" | "viktor";
+  id: "lola" | "viktor" | "kristina" | "yana" | "lenya";
   firstName: string;
   lastName: string;
   status: string;
@@ -686,20 +689,83 @@ export const VIKTOR_PROFILE: ProfileData = {
   ],
   dialogs: [
     {
-      id: "d-lola",
-      name: "Лола Миронова",
-      initials: "ЛМ",
-      color: "#ec4899",
-      online: true,
-      time: "19:02",
-      unread: 1,
-      pinned: true,
+      id: "d-leonid",
+      name: "Леонид Громов",
+      initials: "ЛГ",
+      color: "#64748b",
+      online: false,
+      lastOnline: "был недавно",
+      time: "09:42",
       messages: [
-        { id: "m1", date: "12 ноября", fromMe: true, text: "Лола, добрый вечер. Договор аренды по студии почти готов.", time: "17:44" },
-        { id: "m2", fromMe: true, text: "Арендодатель внёс правки в пункт про субаренду. Ничего критичного, но нужно обсудить.", time: "17:45" },
-        { id: "m3", fromMe: false, text: "Добрый вечер, Виктор! Спасибо, что держите в курсе 🙏", time: "18:10" },
-        { id: "m4", fromMe: false, text: "В четверг буду вовремя, захвачу все бумаги", time: "18:11" },
-        { id: "m5", fromMe: true, text: "Договорились. Не переживайте, всё под контролем.", time: "19:02" },
+        { id: "le1", date: "12 марта", fromMe: true, text: "Лёнь, ты во сколько домой? Я ужин приготовил, если задержишься — напиши, уберу в холодильник.", time: "17:40" },
+        { id: "le2", fromMe: false, text: "Буду около восьми, пап. Надо ещё на мойку заехать, всю машину в слякоти забрызгало.", time: "17:52" },
+        { id: "le3", fromMe: true, text: "Заодно проверь, чтобы страховка в бардачке лежала — я вчера на ней документы перекладывал. И ещё: у нас на тумбочке в прихожей лежит квитанция на налог за здание мастерской. Я тебе его подарил, чтобы с умом им занимался, не затягивай с оплатой.", time: "17:55" },
+        { id: "le4", fromMe: false, text: "Помню, вечером оплачу. Как раз арендаторша скоро за март переведёт, всё сразу закрою.", time: "18:03" },
+        { id: "le5", fromMe: true, text: "Добро. Захвати тогда хлеба по дороге, дома совсем закончился.", time: "18:06" },
+        { id: "le6", date: "15 марта", fromMe: true, text: "Доброе утро. Я проснулся — тебя уже нет, а машина под окном стоит. Ты пешком куда-то ушёл?", time: "09:15" },
+        { id: "le7", fromMe: false, text: "Да, проветриться вышел, голова тяжёлая после вчерашнего. Скоро вернусь.", time: "09:38" },
+        { id: "le8", fromMe: true, text: "Понятно. Я после обеда в гараж собираюсь, оставь ключи от машины на крючке в коридоре.", time: "09:42" },
+      ],
+    },
+    {
+      id: "d-kristina",
+      name: "Кристина Белова",
+      initials: "КБ",
+      color: "#8b5cf6",
+      online: false,
+      lastOnline: "была в сети 13 марта",
+      time: "18:54",
+      messages: [
+        { id: "kr1", date: "1 марта", fromMe: false, text: "Так устала постоянно оглядываться и от Паши, и ото всех скрываться. Иногда кажется, что нас кто-нибудь заметит.", time: "14:10" },
+        { id: "kr2", fromMe: true, text: "Никто не узнает, если будем осторожны. Пока нам лучше не светиться на людях, потерпи немного.", time: "14:16" },
+        { id: "kr3", date: "8 марта", fromMe: false, text: "Люцифер 😈 Вить, спасибо огромное за колье и серёжки! Они безумно красивые, я не могу налюбоваться.", time: "22:15" },
+        { id: "kr4", fromMe: true, text: "Рад, что тебе понравилось, Крис. Только убери их подальше — Паша не должен увидеть такой подарок.", time: "22:19" },
+        { id: "kr5", date: "9 марта", fromMe: true, text: "Запиши мой второй номер: +7 (999) 555-01-48. Купил отдельную симку только для нашего с тобой общения, чтобы скрываться и не оставлять следов на основном телефоне.", time: "19:05" },
+        { id: "kr6", fromMe: false, text: "Сохранила, мой Люцифер. Записала под рабочим именем, чтобы Паша случайно не увидел, если возьмёт мой телефон.", time: "19:09" },
+        { id: "kr7", date: "10 марта", fromMe: false, text: "Завтра вечером Паша уезжает по делам, я буду свободна после семи.", time: "20:40" },
+        { id: "kr8", fromMe: true, text: "Отлично. Тогда в 19:15 заберу тебя у выезда с твоей улицы и подвезу на своей машине, во двор заезжать не буду.", time: "20:45" },
+        { id: "kr9", date: "11 марта", fromMe: true, text: "Я выехал, скоро буду на месте. Как выйдешь из подъезда — пиши уже на мой второй номер.", time: "18:50" },
+        { id: "kr10", fromMe: false, text: "Уже собираюсь, Люцифер 😘 Буду через двадцать минут.", time: "18:54" },
+      ],
+    },
+    {
+      id: "d-irina",
+      name: "Ирина Громова",
+      initials: "ИГ",
+      color: "#d977a8",
+      online: false,
+      lastOnline: "была недавно",
+      time: "18:23",
+      messages: [
+        { id: "ir1", date: "17 января", fromMe: false, text: "Витя, привет. Послезавтра у Лёни день рождения, 19 января — мы как в итоге отмечаем? Он ничего не говорил?", time: "19:14" },
+        { id: "ir2", fromMe: true, text: "Привет. Сказал, шумную компанию не хочет, просто посидим вечером у нас дома за ужином. Часов на семь нормально будет?", time: "19:21" },
+        { id: "ir3", fromMe: false, text: "Да, идеально, я после работы как раз к семи успею. Давай я приготовлю его любимое мясо и куплю торт, а ты сделаешь салаты и нарезку?", time: "19:24" },
+        { id: "ir4", fromMe: true, text: "Договорились, я ещё картошку запеку. И давай сразу по подаркам сверимся, чтобы не подарить одно и то же. Я ему хочу взять хороший набор инструментов в багажник и тёплый свитер.", time: "19:28" },
+        { id: "ir5", fromMe: false, text: "А я как раз про свитер думала, хорошо, что сказал 😅 Тогда подарю ему качественные кожаные перчатки, а то на днях жаловался, что свои потерял.", time: "19:33" },
+        { id: "ir6", fromMe: true, text: "Перчатки — самое то, по утрам в машине руль ледяной, точно пригодятся.", time: "19:36" },
+        { id: "ir7", fromMe: false, text: "Отлично, завтра после работы заскочу в торговый центр. Лёня 19-го днём будет дома или уедет?", time: "19:39" },
+        { id: "ir8", fromMe: true, text: "Сказал, днём проедет по своим делам, а к шести уже вернётся.", time: "19:43" },
+        { id: "ir9", date: "19 января", fromMe: false, text: "Вить, я уже подъезжаю, торт и подарок с собой. Лёня дома?", time: "18:20" },
+        { id: "ir10", fromMe: true, text: "Да, только зашёл. Поднимайся, дверь не закрыта.", time: "18:23" },
+      ],
+    },
+    {
+      id: "d-vlad",
+      name: "Владосик",
+      initials: "В",
+      color: "#15803d",
+      online: false,
+      lastOnline: "был недавно",
+      time: "20:01",
+      messages: [
+        { id: "vl1", date: "7 февраля", fromMe: false, text: "Вить, ты на эти выходные свободен? Думаю рвануть к себе на дачу — надо отдохнуть от города и баню как следует затопить.", time: "15:20" },
+        { id: "vl2", fromMe: true, text: "Я только за, как раз хотел развеяться. На твоей даче вообще лучше всего отдыхается — тишина, сосны кругом, никакой суеты.", time: "15:28" },
+        { id: "vl3", fromMe: false, text: "Это точно. Берёзовые веники у меня отличные припасены, парная будет огонь. С тебя тогда пиво, а я мяса замариную.", time: "15:32" },
+        { id: "vl4", fromMe: true, text: "Договорились! Заеду по дороге, возьму ящик хорошего светлого и рыбы к пиву — посидим после бани как в старые добрые.", time: "15:36" },
+        { id: "vl5", date: "11 февраля", fromMe: false, text: "Фотки с выходных посмотрел — знатно мы в субботу попарились, я в понедельник еле на работу встал 😅", time: "19:45" },
+        { id: "vl6", fromMe: true, text: "Да уж, отдохнули душевно! До сих пор вспоминаю, как после парной на веранде с холодным пивом сидели — кайф.", time: "19:52" },
+        { id: "vl7", fromMe: false, text: "Надо в конце месяца повторить, как ещё чуть потеплеет. Дача всегда в деле, в любой момент можно собраться.", time: "19:56" },
+        { id: "vl8", fromMe: true, text: "Обязательно выберемся, Влад. Спасибо, что вытащил!", time: "20:01" },
       ],
     },
     {
@@ -743,18 +809,6 @@ export const VIKTOR_PROFILE: ProfileData = {
       ],
     },
     {
-      id: "d-elena",
-      name: "Елена Громова",
-      initials: "ЕГ",
-      color: "#ec4899",
-      online: false,
-      time: "12:10",
-      messages: [
-        { id: "m1", date: "12 ноября", fromMe: false, text: "Пап, забери Даню с тренировки в 18:00? У меня совещание", time: "11:50" },
-        { id: "m2", fromMe: true, text: "Заберу. Пусть форму не забудет, в прошлый раз искали всей раздевалкой", time: "12:10" },
-      ],
-    },
-    {
       id: "d-partner",
       name: "Дмитрий Власов",
       initials: "ДВ",
@@ -777,3 +831,38 @@ export const VIKTOR_PROFILE: ProfileData = {
   ],
   photos: [{ src: viktorAvatar }],
 };
+
+const friendProfile = (id: "kristina" | "yana" | "lenya", firstName: string, lastName: string, avatar: string, status: string, city: string, work: string, education: string, about: string[], coverFrom: string, coverTo: string): ProfileData => ({
+  ...LOLA_PROFILE,
+  id,
+  firstName,
+  lastName,
+  avatar,
+  status,
+  city,
+  work,
+  education,
+  onlineText: id === "kristina" ? "была в сети 13 марта" : id === "yana" ? "online" : "была недавно",
+  coverFrom,
+  coverTo,
+  coverEmoji: id === "kristina" ? "✨" : id === "yana" ? "🌸" : "🎧",
+  followers: id === "kristina" ? "2 846" : id === "yana" ? "3 102" : "846",
+  photosCount: 3,
+  friendsCount: id === "lenya" ? 128 : 246,
+  about,
+  posts: [
+    { id: `${id}-1`, pinned: true, text: status, time: "сегодня в 12:40", likes: 86, comments: 12, reposts: 4, views: "1,2К" },
+    { id: `${id}-2`, text: id === "kristina" ? "Немного красоты в обычном дне ✨ музыка, друзья и спонтанные планы — то, что нужно." : id === "yana" ? "Пусть дома будет тепло, на столе — торт, а рядом — любимые люди 🌸" : "Вечерний город, любимый плейлист и никаких лишних планов." , time: "вчера в 18:20", likes: 54, comments: 8, reposts: 2, views: "740" },
+  ],
+  dialogs: [],
+  friends: [
+    { name: "Лола Миронова", desc: "Подруга", initials: "ЛМ", color: "#a855f7", online: true },
+    { name: "Яна Миронова", desc: "Сестра", initials: "ЯМ", color: "#ec4899", online: true },
+    { name: "Кристина Белова", desc: "Подруга", initials: "КБ", color: "#8b5cf6", online: false },
+  ],
+  photos: [{ src: avatar }, { src: LOLA_STUDIO }, { src: lolaVases }],
+});
+
+export const KRISTINA_PROFILE = friendProfile("kristina", "Кристина", "Белова", KRISTINA_AVATAR, "Люблю моменты, которые хочется запомнить ✨", "Москва", "Бьюти-блог и контент", "РГУ им. Косыгина", ["Делюсь находками, музыкой и кусочками своей жизни.", "Всегда за красивые планы и хорошую компанию ✨"], "#f472b6", "#8b5cf6");
+export const YANA_PROFILE = friendProfile("yana", "Яна", "Миронова", YANA_AVATAR, "Собираю близких за одним столом 🌸", "Москва", "Организатор мероприятий", "РАНХиГС", ["Сестра Лолы. Люблю уютные праздники, цветы и долгие разговоры.", "В любой непонятной ситуации — ставлю чайник ☕"], "#f59e0b", "#ec4899");
+export const LENYA_PROFILE = friendProfile("lenya", "Леонид", "Орлов", LENYA_AVATAR, "Музыка, город и немного тишины.", "Москва", "Звукорежиссёр", "Московский институт культуры", ["Работаю со звуком и живыми концертами.", "Предпочитаю говорить по делу."], "#3b82f6", "#6d28d9");

@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { LoginScreen, ForgotLoginScreen, CodeScreen } from "./components/AuthScreens";
+import { LoginScreen, ForgotLoginScreen, CodeScreen, SetPasswordScreen } from "./components/AuthScreens";
 import { ProfileShell } from "./components/ProfileShell";
-import { LOLA_PROFILE, VIKTOR_PROFILE } from "./game/profiles";
+import { LOLA_PROFILE, VIKTOR_PROFILE, KRISTINA_PROFILE, YANA_PROFILE, LENYA_PROFILE } from "./game/profiles";
 
 type Screen =
   | { name: "login" }
   | { name: "forgot-login" }
   | { name: "forgot-code" }
-  | { name: "profile"; user: "lola" | "viktor"; welcome: boolean };
+  | { name: "set-password" }
+  | { name: "profile"; user: "lola" | "viktor" | "kristina" | "yana" | "lenya"; welcome: boolean };
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>({ name: "login" });
@@ -34,18 +35,22 @@ export default function App() {
     return (
       <CodeScreen
         onBack={() => setScreen({ name: "forgot-login" })}
-        onSuccess={() => setScreen({ name: "profile", user: "lola", welcome: true })}
+        onSuccess={() => setScreen({ name: "set-password" })}
       />
     );
   }
 
-  const profile = screen.user === "lola" ? LOLA_PROFILE : VIKTOR_PROFILE;
+  if (screen.name === "set-password") {
+    return <SetPasswordScreen onSuccess={() => setScreen({ name: "login" })} />;
+  }
+
+  const profile = screen.user === "lola" ? LOLA_PROFILE : screen.user === "viktor" ? VIKTOR_PROFILE : screen.user === "kristina" ? KRISTINA_PROFILE : screen.user === "yana" ? YANA_PROFILE : LENYA_PROFILE;
 
   return (
     <ProfileShell
       key={screen.user}
       profile={profile}
-      welcome={screen.welcome ? screen.user : null}
+      welcome={screen.welcome && (screen.user === "lola" || screen.user === "viktor") ? screen.user : null}
       onCloseWelcome={() => setScreen({ name: "profile", user: screen.user, welcome: false })}
       onLogout={() => setScreen({ name: "login" })}
     />
