@@ -487,13 +487,13 @@ export function ProfileShell({
                         }}
                         className={`w-full flex gap-2.5 px-3 py-2.5 text-left transition hover:bg-purple-500/[.04] ${active?.id === d.id ? "bg-[#ede9fe]" : ""}`}
                       >
-                        <button onClick={(e) => { e.stopPropagation(); openFriendPage(d.name); }} aria-label={`Открыть профиль ${d.name}`} className="relative shrink-0 w-11 h-11 rounded-full overflow-hidden">
+                        <div className="relative shrink-0 w-11 h-11 rounded-full overflow-hidden">
                           {avatarFor(d.id, d.initials, d.color)}
                           {d.online && <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#22c55e] border-2 border-white" />}
-                        </button>
+                        </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <button onClick={(e) => { e.stopPropagation(); openFriendPage(d.name); }} className="font-bold text-[13.5px] text-[#1e1b2e] truncate text-left">{d.name}</button>
+                            <span className="font-bold text-[13.5px] text-[#1e1b2e] truncate">{d.name}</span>
                             {d.pinned && <Pin className="w-3 h-3 text-[#9b95b0] rotate-45 shrink-0" />}
                             <span className="ml-auto text-[11.5px] text-[#9b95b0] shrink-0">{d.time}</span>
                           </div>
