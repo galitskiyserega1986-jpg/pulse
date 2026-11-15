@@ -305,7 +305,7 @@ export function ProfileShell({
               {/* cover + info */}
               <div className="bg-white rounded-[16px] border border-purple-950/5 overflow-hidden shadow-sm">
                 <div
-                  className="h-[150px] sm:h-[190px] relative"
+                  className="h-[140px] sm:h-[170px] relative"
                   style={{ background: `linear-gradient(120deg, ${pageProfile.coverFrom}, ${pageProfile.coverTo})` }}
                 >
                   <div className="absolute inset-0 cover-pattern" />
@@ -317,8 +317,8 @@ export function ProfileShell({
                   </div>
                 </div>
                 <div className="relative z-10 px-4 sm:px-5 pb-4">
-                  <div className="flex flex-col sm:flex-row sm:items-end gap-4 -mt-10 sm:-mt-12">
-                    <div className="relative shrink-0">
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-4">
+                    <div className="relative shrink-0 -mt-10 sm:mt-0 sm:-translate-y-12">
                       <img
                         src={pageProfile.avatar}
                         alt=""
