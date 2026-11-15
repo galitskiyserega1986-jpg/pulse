@@ -713,7 +713,7 @@ export const VIKTOR_PROFILE: ProfileData = {
       initials: "КБ",
       color: "#8b5cf6",
       online: false,
-      lastOnline: "была недавно",
+      lastOnline: "была в сети 13 марта",
       time: "18:54",
       messages: [
         { id: "kr1", date: "1 марта", fromMe: false, text: "Так устала постоянно оглядываться и от Паши, и ото всех скрываться. Иногда кажется, что нас кто-нибудь заметит.", time: "14:10" },
@@ -842,7 +842,7 @@ const friendProfile = (id: "kristina" | "yana" | "lenya", firstName: string, las
   city,
   work,
   education,
-  onlineText: id === "yana" ? "online" : "была недавно",
+  onlineText: id === "kristina" ? "была в сети 13 марта" : id === "yana" ? "online" : "была недавно",
   coverFrom,
   coverTo,
   coverEmoji: id === "kristina" ? "✨" : id === "yana" ? "🌸" : "🎧",

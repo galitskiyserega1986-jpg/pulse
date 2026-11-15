@@ -316,7 +316,7 @@ export function ProfileShell({
                     </div>
                   </div>
                 </div>
-                <div className="px-4 sm:px-5 pb-4">
+                <div className="relative z-10 px-4 sm:px-5 pb-4">
                   <div className="flex flex-col sm:flex-row sm:items-end gap-4 -mt-10 sm:-mt-12">
                     <div className="relative shrink-0">
                       <img
@@ -325,7 +325,7 @@ export function ProfileShell({
                         onClick={() => setLightboxSrc(pageProfile.avatar)}
                         className="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] rounded-full object-cover border-4 border-white shadow-lg cursor-pointer"
                       />
-                      <span className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-[#22c55e] border-[3px] border-white online-dot" />
+                      {pageProfile.onlineText === "online" && <span className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-[#22c55e] border-[3px] border-white online-dot" />}
                     </div>
                     <div className="flex-1 min-w-0 sm:pb-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
@@ -335,7 +335,7 @@ export function ProfileShell({
                         <BadgeCheck className="w-5 h-5 text-[#7c3aed]" />
                       </div>
                       <div className="text-[13px] text-[#6b6580] mt-0.5 leading-snug max-w-[520px]">{pageProfile.status}</div>
-                      <div className="text-[12.5px] text-[#22c55e] font-medium mt-1">{pageProfile.onlineText}</div>
+                      <div className={`text-[12.5px] font-medium mt-1 ${pageProfile.onlineText === "online" ? "text-[#22c55e]" : "text-[#9b95b0]"}`}>{pageProfile.onlineText}</div>
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <button
