@@ -44,7 +44,7 @@ import {
   X,
 } from "lucide-react";
 import type { ProfileData } from "../game/profiles";
-import { LOLA_AVATAR, VIKTOR_AVATAR } from "../game/profiles";
+import { LOLA_AVATAR, VIKTOR_AVATAR, KRISTINA_AVATAR, YANA_AVATAR, LENYA_AVATAR } from "../game/profiles";
 
 type Tab = "profile" | "messages" | "photos";
 
@@ -53,11 +53,13 @@ export function ProfileShell({
   welcome,
   onLogout,
   onCloseWelcome,
+  onOpenProfile,
 }: {
   profile: ProfileData;
   welcome: "lola" | "viktor" | null;
   onLogout: () => void;
   onCloseWelcome: () => void;
+  onOpenProfile: (user: "kristina" | "yana" | "lenya") => void;
 }) {
   const [tab, setTab] = useState<Tab>("profile");
   const [dialogs, setDialogs] = useState(profile.dialogs);
@@ -70,6 +72,7 @@ export function ProfileShell({
   const [newPost, setNewPost] = useState("");
   const [extraPosts, setExtraPosts] = useState<{ id: string; text: string; time: string }[]>([]);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [viewedPerson, setViewedPerson] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const active = dialogs.find((d) => d.id === activeId) ?? dialogs[0];
@@ -128,9 +131,10 @@ export function ProfileShell({
         <img src={VIKTOR_AVATAR} alt="" className="w-full h-full object-cover" />
       );
     if (profile.id === "viktor" && dialogId === "d-lola")
-      return (
-        <img src={LOLA_AVATAR} alt="" className="w-full h-full object-cover" />
-      );
+      return <img src={LOLA_AVATAR} alt="" className="w-full h-full object-cover" />;
+    if (dialogId === "d-kristina") return <img src={KRISTINA_AVATAR} alt="" className="w-full h-full object-cover" />;
+    if (dialogId === "d-yana") return <img src={YANA_AVATAR} alt="" className="w-full h-full object-cover" />;
+    if (dialogId === "d-leonid") return <img src={LENYA_AVATAR} alt="" className="w-full h-full object-cover" />;
     return (
       <div
         className="w-full h-full flex items-center justify-center text-white font-extrabold"
@@ -503,15 +507,15 @@ export function ProfileShell({
                     <button className="md:hidden w-8 h-8 rounded-full hover:bg-purple-500/10 flex items-center justify-center" onClick={() => setActiveId("")}>
                       <ArrowLeft className="w-5 h-5" />
                     </button>
-                    <div className="w-9 h-9 rounded-full overflow-hidden shrink-0">
+                    <button onClick={() => setViewedPerson(active.name)} className="w-9 h-9 rounded-full overflow-hidden shrink-0" aria-label={`Профиль: ${active.name}`}>
                       {avatarFor(active.id, active.initials, active.color)}
-                    </div>
-                    <div className="min-w-0">
+                    </button>
+                    <button onClick={() => setViewedPerson(active.name)} className="min-w-0 text-left">
                       <div className="font-bold text-[14px] text-[#1e1b2e] truncate">{active.name}</div>
                       <div className={`text-[12px] ${active.online ? "text-[#22c55e]" : "text-[#9b95b0]"}`}>
                         {active.online ? "online" : active.lastOnline ?? "был(а) недавно"}
                       </div>
-                    </div>
+                    </button>
                     <div className="ml-auto flex gap-1 text-[#6b6580]">
                       <div className="w-9 h-9 rounded-full flex items-center justify-center cursor-default"><PhoneCall className="w-[18px] h-[18px]" /></div>
                       <div className="w-9 h-9 rounded-full hidden sm:flex items-center justify-center cursor-default"><Video className="w-[18px] h-[18px]" /></div>
@@ -712,6 +716,15 @@ export function ProfileShell({
           </div>
         </div>
       )}
+      {viewedPerson && (() => {
+        const isKristina = viewedPerson.includes("Кристина");
+        const isYana = viewedPerson.includes("Яна");
+        const isLenya = viewedPerson.includes("Лён") || viewedPerson.includes("Леон") || viewedPerson.includes("Лен");
+        const name = isKristina ? "Кристина Белова" : isYana ? "Яна Миронова" : isLenya ? "Леонид (Лёня)" : viewedPerson;
+        const image = isKristina ? KRISTINA_AVATAR : isYana ? YANA_AVATAR : isLenya ? LENYA_AVATAR : viewedPerson.includes("Виктор") ? VIKTOR_AVATAR : LOLA_AVATAR;
+        const about = isKristina ? "Подруга Лолы. Любит вечеринки, музыку и бьюти-находки." : isYana ? "Сестра Лолы. Организует уютные встречи и дни рождения." : isLenya ? "Знакомый Лолы, с которым её связывает непростая история." : "Профиль участника Pulse.";
+        return <div className="fixed inset-0 z-[80] bg-black/40 flex items-center justify-center p-4" onClick={() => setViewedPerson(null)}><section className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl" onClick={e => e.stopPropagation()}><button onClick={() => setViewedPerson(null)} className="float-right text-xl text-gray-400" aria-label="Закрыть">×</button><img src={image} alt="" className="w-20 h-20 rounded-full object-cover mx-auto"/><h2 className="mt-3 text-center text-xl font-bold text-[#1e1b2e]">{name}</h2><p className="mt-1 text-center text-sm text-[#6b6580]">{about}</p><div className="mt-4 rounded-xl bg-[#f7f5fb] p-3 text-sm text-[#4a445d]">{isYana ? "Москва · сестра" : isKristina ? "Москва · подруга" : isLenya ? "Москва · знакомый" : "В Pulse"}<br/>Фото профиля и основная информация</div>{(isKristina || isYana || isLenya) && <button onClick={() => { const target = isKristina ? "kristina" : isYana ? "yana" : "lenya"; setViewedPerson(null); onOpenProfile(target); }} className="mt-4 w-full rounded-xl bg-[#7c3aed] py-2.5 font-bold text-white">Открыть страницу</button>}<button onClick={() => setViewedPerson(null)} className="mt-2 w-full rounded-xl bg-[#f1eff6] py-2.5 font-bold text-[#4a445d]">Закрыть</button></section></div>;
+      })()}
     </div>
   );
 }

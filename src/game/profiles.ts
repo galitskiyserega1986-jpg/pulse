@@ -8,6 +8,9 @@ import fishImg from "../../public/images/fish.jpg?inline";
 
 export const LOLA_AVATAR = lolaAvatar;
 export const VIKTOR_AVATAR = viktorAvatar;
+export const KRISTINA_AVATAR = "/images/kristina-avatar.svg";
+export const YANA_AVATAR = "/images/yana-avatar.svg";
+export const LENYA_AVATAR = "/images/lenya-avatar.svg";
 export const LOLA_STUDIO = lolaStudio;
 
 export interface ChatMessage {
@@ -54,7 +57,7 @@ export interface Friend {
 }
 
 export interface ProfileData {
-  id: "lola" | "viktor";
+  id: "lola" | "viktor" | "kristina" | "yana" | "lenya";
   firstName: string;
   lastName: string;
   status: string;
@@ -777,3 +780,38 @@ export const VIKTOR_PROFILE: ProfileData = {
   ],
   photos: [{ src: viktorAvatar }],
 };
+
+const friendProfile = (id: "kristina" | "yana" | "lenya", firstName: string, lastName: string, avatar: string, status: string, city: string, work: string, education: string, about: string[], coverFrom: string, coverTo: string): ProfileData => ({
+  ...LOLA_PROFILE,
+  id,
+  firstName,
+  lastName,
+  avatar,
+  status,
+  city,
+  work,
+  education,
+  onlineText: id === "yana" ? "online" : "была недавно",
+  coverFrom,
+  coverTo,
+  coverEmoji: id === "kristina" ? "✨" : id === "yana" ? "🌸" : "🎧",
+  followers: id === "kristina" ? "2 846" : id === "yana" ? "3 102" : "846",
+  photosCount: 3,
+  friendsCount: id === "lenya" ? 128 : 246,
+  about,
+  posts: [
+    { id: `${id}-1`, pinned: true, text: status, time: "сегодня в 12:40", likes: 86, comments: 12, reposts: 4, views: "1,2К" },
+    { id: `${id}-2`, text: id === "kristina" ? "Немного красоты в обычном дне ✨ музыка, друзья и спонтанные планы — то, что нужно." : id === "yana" ? "Пусть дома будет тепло, на столе — торт, а рядом — любимые люди 🌸" : "Вечерний город, любимый плейлист и никаких лишних планов." , time: "вчера в 18:20", likes: 54, comments: 8, reposts: 2, views: "740" },
+  ],
+  dialogs: [],
+  friends: [
+    { name: "Лола Миронова", desc: "Подруга", initials: "ЛМ", color: "#a855f7", online: true },
+    { name: "Яна Миронова", desc: "Сестра", initials: "ЯМ", color: "#ec4899", online: true },
+    { name: "Кристина Белова", desc: "Подруга", initials: "КБ", color: "#8b5cf6", online: false },
+  ],
+  photos: [{ src: avatar }, { src: LOLA_STUDIO }, { src: LOLA_VASES }],
+});
+
+export const KRISTINA_PROFILE = friendProfile("kristina", "Кристина", "Белова", "/images/kristina-avatar.svg", "Люблю моменты, которые хочется запомнить ✨", "Москва", "Бьюти-блог и контент", "РГУ им. Косыгина", ["Делюсь находками, музыкой и кусочками своей жизни.", "Всегда за красивые планы и хорошую компанию ✨"], "#f472b6", "#8b5cf6");
+export const YANA_PROFILE = friendProfile("yana", "Яна", "Миронова", "/images/yana-avatar.svg", "Собираю близких за одним столом 🌸", "Москва", "Организатор мероприятий", "РАНХиГС", ["Сестра Лолы. Люблю уютные праздники, цветы и долгие разговоры.", "В любой непонятной ситуации — ставлю чайник ☕"], "#f59e0b", "#ec4899");
+export const LENYA_PROFILE = friendProfile("lenya", "Леонид", "Орлов", "/images/lenya-avatar.svg", "Музыка, город и немного тишины.", "Москва", "Звукорежиссёр", "Московский институт культуры", ["Работаю со звуком и живыми концертами.", "Предпочитаю говорить по делу."], "#3b82f6", "#6d28d9");

@@ -69,7 +69,12 @@ export function LoginScreen({
     setTimeout(() => {
       setLoading(false);
 
-      // любой логин, кроме логина Виктора, — всегда неверные данные
+      if (login.trim() === LOLA_LOGIN) {
+        const saved = localStorage.getItem("pulse_lola_password");
+        if (saved && password === saved) onSuccess("lola");
+        else showError({ kind: "invalid" });
+        return;
+      }
       if (login.trim() !== VIKTOR_LOGIN) {
         showError({ kind: "invalid" });
         return;
@@ -677,4 +682,24 @@ export function CodeScreen({
       </div>
     </div>
   );
+}
+
+export function SetPasswordScreen({ onSuccess }: { onSuccess: () => void }) {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
+  const save = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password.length < 6) return setError("Пароль должен содержать не менее 6 символов.");
+    if (password !== confirm) return setError("Пароли не совпадают.");
+    localStorage.setItem("pulse_lola_password", password);
+    onSuccess();
+  };
+  return <div className="min-h-screen bg-[#f1eff6] flex items-center justify-center p-4"><form onSubmit={save} className="w-full max-w-[440px] bg-white rounded-[20px] p-7 shadow-xl space-y-4">
+    <div className="w-12 h-12 rounded-2xl bg-[#ede9fe] flex items-center justify-center"><KeyRound className="w-6 h-6 text-[#7c3aed]" /></div>
+    <h2 className="text-xl font-extrabold text-[#1e1b2e]">Придумайте новый пароль</h2><p className="text-sm text-[#6b6580]">Для входа в аккаунт Лолы используйте логин <b>{LOLA_LOGIN}</b> и этот пароль.</p>
+    <input autoFocus type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Новый пароль (от 6 символов)" className="w-full h-12 rounded-xl bg-[#f4f2f8] px-4 outline-none focus:ring-2 focus:ring-[#7c3aed]" />
+    <input type="password" value={confirm} onChange={e=>setConfirm(e.target.value)} placeholder="Повторите пароль" className="w-full h-12 rounded-xl bg-[#f4f2f8] px-4 outline-none focus:ring-2 focus:ring-[#7c3aed]" />
+    {error && <p className="text-sm text-red-600">{error}</p>}<button className="w-full h-12 rounded-xl bg-[#7c3aed] text-white font-bold">Сохранить пароль</button>
+  </form></div>;
 }
