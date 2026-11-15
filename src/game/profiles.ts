@@ -1,10 +1,10 @@
-import lolaAvatar from "../../public/images/lola.jpg?inline";
-import viktorAvatar from "../../public/images/viktor.jpg?inline";
-import lolaStudio from "../../public/images/lola-studio.jpg?inline";
-import lolaVases from "../../public/images/lola-vases.jpg?inline";
-import lolaMugs from "../../public/images/lola-mugs.jpg?inline";
-import perfumeImg from "../../public/images/perfume.jpg?inline";
-import fishImg from "../../public/images/fish.jpg?inline";
+const lolaAvatar = "/images/lola.jpg";
+const viktorAvatar = "/images/viktor.jpg";
+const lolaStudio = "/images/lola-studio.jpg";
+const lolaVases = "/images/lola-vases.jpg";
+const lolaMugs = "/images/lola-mugs.jpg";
+const perfumeImg = "/images/perfume.jpg";
+const fishImg = "/images/fish.jpg";
 
 export const LOLA_AVATAR = lolaAvatar;
 export const VIKTOR_AVATAR = viktorAvatar;
