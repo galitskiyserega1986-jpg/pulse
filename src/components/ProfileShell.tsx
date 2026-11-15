@@ -600,11 +600,11 @@ export function ProfileShell({
           {tab === "photos" && (
             <div className="bg-white rounded-[16px] border border-purple-950/5 shadow-sm p-4 sm:p-5 animate-fade-up">
               <div className="flex items-center gap-2 mb-4">
-                <h2 className="font-extrabold text-[17px] text-[#1e1b2e]">Фотографии</h2>
-                <span className="text-[13px] text-[#9b95b0] font-medium">{pageProfile.photos.length}</span>
+                <h2 className="font-extrabold text-[17px] text-[#1e1b2e]">Фотографии {profile.firstName}</h2>
+                <span className="text-[13px] text-[#9b95b0] font-medium">{profile.photos.length}</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                {pageProfile.photos.map((ph, i) => (
+                {profile.photos.map((ph, i) => (
                   <div
                     key={i}
                     onClick={() => setLightboxSrc(ph.src)}
