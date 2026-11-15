@@ -1,16 +1,19 @@
-const lolaAvatar = "/images/lolaavatarka.jpg";
-const viktorAvatar = "/images/viktoravatarka.jpg";
-const lolaStudio = "/images/lola-studio.jpg";
-const lolaVases = "/images/lola-vases.jpg";
-const lolaMugs = "/images/lola-mugs.jpg";
-const perfumeImg = "/images/perfume.jpg";
-const fishImg = "/images/fish.jpg";
+// Prefix public assets with Vite's base so they work both locally and on GitHub Pages.
+const image = (fileName: string) => `${import.meta.env.BASE_URL}images/${fileName}`;
+
+const lolaAvatar = image("lolaavatarka.jpg");
+const viktorAvatar = image("viktoravatarka.jpg");
+const lolaStudio = image("lola-studio.jpg");
+const lolaVases = image("lola-vases.jpg");
+const lolaMugs = image("lola-mugs.jpg");
+const perfumeImg = image("perfume.jpg");
+const fishImg = image("fish.jpg");
 
 export const LOLA_AVATAR = lolaAvatar;
 export const VIKTOR_AVATAR = viktorAvatar;
-export const KRISTINA_AVATAR = "/images/kristinaavatarka.jpg";
-export const YANA_AVATAR = "/images/ianaavatarka.jpg";
-export const LENYA_AVATAR = "/images/leonidavatarka.jpg";
+export const KRISTINA_AVATAR = image("kristinaavatarka.jpg");
+export const YANA_AVATAR = image("ianaavatarka.jpg");
+export const LENYA_AVATAR = image("leonidavatarka.jpg");
 export const LOLA_STUDIO = lolaStudio;
 
 export interface ChatMessage {
