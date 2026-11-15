@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
-      - arena/45c7f203-pulse
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
