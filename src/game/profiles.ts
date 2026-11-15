@@ -1,5 +1,5 @@
-const lolaAvatar = "/images/lola.jpg";
-const viktorAvatar = "/images/viktor.jpg";
+const lolaAvatar = "/images/lolaavatarka.jpg";
+const viktorAvatar = "/images/viktoravatarka.jpg";
 const lolaStudio = "/images/lola-studio.jpg";
 const lolaVases = "/images/lola-vases.jpg";
 const lolaMugs = "/images/lola-mugs.jpg";
@@ -8,9 +8,9 @@ const fishImg = "/images/fish.jpg";
 
 export const LOLA_AVATAR = lolaAvatar;
 export const VIKTOR_AVATAR = viktorAvatar;
-export const KRISTINA_AVATAR = "/images/kristina-avatar.svg";
-export const YANA_AVATAR = "/images/yana-avatar.svg";
-export const LENYA_AVATAR = "/images/lenya-avatar.svg";
+export const KRISTINA_AVATAR = "/images/kristinaavatarka.jpg";
+export const YANA_AVATAR = "/images/ianaavatarka.jpg";
+export const LENYA_AVATAR = "/images/leonidavatarka.jpg";
 export const LOLA_STUDIO = lolaStudio;
 
 export interface ChatMessage {
@@ -812,6 +812,6 @@ const friendProfile = (id: "kristina" | "yana" | "lenya", firstName: string, las
   photos: [{ src: avatar }, { src: LOLA_STUDIO }, { src: lolaVases }],
 });
 
-export const KRISTINA_PROFILE = friendProfile("kristina", "Кристина", "Белова", "/images/kristina-avatar.svg", "Люблю моменты, которые хочется запомнить ✨", "Москва", "Бьюти-блог и контент", "РГУ им. Косыгина", ["Делюсь находками, музыкой и кусочками своей жизни.", "Всегда за красивые планы и хорошую компанию ✨"], "#f472b6", "#8b5cf6");
-export const YANA_PROFILE = friendProfile("yana", "Яна", "Миронова", "/images/yana-avatar.svg", "Собираю близких за одним столом 🌸", "Москва", "Организатор мероприятий", "РАНХиГС", ["Сестра Лолы. Люблю уютные праздники, цветы и долгие разговоры.", "В любой непонятной ситуации — ставлю чайник ☕"], "#f59e0b", "#ec4899");
-export const LENYA_PROFILE = friendProfile("lenya", "Леонид", "Орлов", "/images/lenya-avatar.svg", "Музыка, город и немного тишины.", "Москва", "Звукорежиссёр", "Московский институт культуры", ["Работаю со звуком и живыми концертами.", "Предпочитаю говорить по делу."], "#3b82f6", "#6d28d9");
+export const KRISTINA_PROFILE = friendProfile("kristina", "Кристина", "Белова", KRISTINA_AVATAR, "Люблю моменты, которые хочется запомнить ✨", "Москва", "Бьюти-блог и контент", "РГУ им. Косыгина", ["Делюсь находками, музыкой и кусочками своей жизни.", "Всегда за красивые планы и хорошую компанию ✨"], "#f472b6", "#8b5cf6");
+export const YANA_PROFILE = friendProfile("yana", "Яна", "Миронова", YANA_AVATAR, "Собираю близких за одним столом 🌸", "Москва", "Организатор мероприятий", "РАНХиГС", ["Сестра Лолы. Люблю уютные праздники, цветы и долгие разговоры.", "В любой непонятной ситуации — ставлю чайник ☕"], "#f59e0b", "#ec4899");
+export const LENYA_PROFILE = friendProfile("lenya", "Леонид", "Орлов", LENYA_AVATAR, "Музыка, город и немного тишины.", "Москва", "Звукорежиссёр", "Московский институт культуры", ["Работаю со звуком и живыми концертами.", "Предпочитаю говорить по делу."], "#3b82f6", "#6d28d9");
