@@ -334,7 +334,7 @@ export function ProfileShell({
                         </h1>
                         <BadgeCheck className="w-5 h-5 text-[#7c3aed]" />
                       </div>
-                      <div className="text-[13px] text-[#6b6580] mt-0.5 leading-snug max-w-[520px]">{pageProfile.status}</div>
+                      <div className="text-[13px] text-[#6b6580] mt-0.5 leading-snug max-w-[520px]">{pageProfile.status.split(/(@VictorAdvokat)/g).map((part, index) => part === "@VictorAdvokat" ? <strong key={index}>{part}</strong> : part)}</div>
                       <div className={`text-[12.5px] font-medium mt-1 ${pageProfile.onlineText === "online" ? "text-[#22c55e]" : "text-[#9b95b0]"}`}>{pageProfile.onlineText}</div>
                     </div>
                     <div className="flex gap-2 shrink-0">
@@ -380,7 +380,22 @@ export function ProfileShell({
                     </div>
                     <div className="mt-1.5 text-[11.5px] font-semibold text-[#1e1b2e] leading-tight">Моя история</div>
                   </div>
-                  {pageProfile.friends.slice(0, 5).map((f) => (
+                  {(pageProfile.id === "viktor"
+                    ? [
+                        ...pageProfile.friends.slice(0, 5).filter((f) => f.name !== "Лола Миронова"),
+                        { name: "Ольга Смирнова", desc: "Друг", initials: "ОС", color: "#f97316", online: true },
+                        { name: "Максим Орлов", desc: "Друг", initials: "МО", color: "#0ea5e9", online: false },
+                      ]
+                    : pageProfile.id === "lola"
+                      ? [
+                          { name: "Сергей", desc: "Друг", initials: "С", color: "#f97316", online: true },
+                          { name: "Арина", desc: "Друг", initials: "А", color: "#0ea5e9", online: false },
+                          { name: "Настяброви", desc: "Друг", initials: "Н", color: "#8b5cf6", online: true },
+                          { name: "Лешка", desc: "Друг", initials: "Л", color: "#22c55e", online: false },
+                          { name: "Ирина", desc: "Друг", initials: "И", color: "#ec4899", online: true },
+                        ]
+                      : pageProfile.friends.slice(0, 5)
+                  ).map((f) => (
                     <div key={f.name} className="shrink-0 w-[86px] text-center cursor-default select-none">
                       <div className="w-[64px] h-[64px] mx-auto rounded-full p-[2.5px] bg-gradient-to-tr from-[#a855f7] via-[#d946ef] to-[#f472b6]">
                         <div className="w-full h-full rounded-full border-[2.5px] border-white overflow-hidden">
@@ -396,7 +411,7 @@ export function ProfileShell({
               </div>
 
               {/* posting is only available on the signed-in user's own page */}
-              {!viewedProfile && <div className="bg-white rounded-[16px] border border-purple-950/5 p-3.5 shadow-sm">
+              {!viewedProfile && profile.id !== "viktor" && profile.id !== "lola" && <div className="bg-white rounded-[16px] border border-purple-950/5 p-3.5 shadow-sm">
                 <div className="flex gap-2.5">
                   <img src={pageProfile.avatar} alt="" className="w-9 h-9 rounded-full object-cover shrink-0" />
                   <input
@@ -447,6 +462,7 @@ export function ProfileShell({
                   reposts={p.reposts}
                   views={p.views}
                   image={p.image}
+                  images={p.images}
                   pinned={p.pinned}
                   liked={liked.has(p.id)}
                   bump={likeBump === p.id}
@@ -761,6 +777,7 @@ function PostCard({
   reposts,
   views,
   image,
+  images,
   pinned,
   liked,
   bump,
@@ -775,6 +792,7 @@ function PostCard({
   reposts: number;
   views: string;
   image?: string;
+  images?: string[];
   pinned?: boolean;
   liked: boolean;
   bump: boolean;
@@ -795,7 +813,7 @@ function PostCard({
         <div className="ml-auto flex items-center gap-2 text-[#9b95b0]">
           {pinned && (
             <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide text-[#6b6580]">
-              <Pin className="w-3.5 h-3.5 rotate-45" /> закрепа
+              <Pin className="w-3.5 h-3.5 rotate-45" /> Закреплено
             </span>
           )}
           <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-default">
@@ -804,16 +822,19 @@ function PostCard({
         </div>
       </div>
 
-      <p className="mt-3 text-[14px] leading-relaxed text-[#221e33] whitespace-pre-line">{text}</p>
+      <p className="mt-3 text-[14px] leading-relaxed text-[#221e33] whitespace-pre-line">{text.split(/(@VictorAdvokat)/g).map((part, index) => part === "@VictorAdvokat" ? <strong key={index}>{part}</strong> : part)}</p>
 
-      {image && (
-        <div className="mt-3 rounded-xl overflow-hidden border border-purple-950/5">
-          <img
-            src={image}
-            alt=""
-            onClick={() => onImageClick(image)}
-            className="w-full max-h-[380px] object-cover hover:scale-[1.01] transition duration-500 cursor-pointer"
-          />
+      {(images?.length ? images : image ? [image] : []).length > 0 && (
+        <div className={`mt-3 rounded-xl overflow-hidden border border-purple-950/5 ${images && images.length > 1 ? "grid grid-cols-2 gap-0.5" : ""}`}>
+          {(images?.length ? images : image ? [image] : []).map((src) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              onClick={() => onImageClick(src)}
+              className="w-full max-h-[380px] object-cover hover:scale-[1.01] transition duration-500 cursor-pointer"
+            />
+          ))}
         </div>
       )}
 
