@@ -48,6 +48,7 @@ export interface WallPost {
   reposts: number;
   views: string;
   image?: string;
+  images?: string[];
   pinned?: boolean;
 }
 
@@ -98,7 +99,7 @@ export const LOLA_PROFILE: ProfileData = {
   coverTo: "#ec4899",
   coverEmoji: "🏺",
   followers: "4 218",
-  photosCount: 4,
+  photosCount: 3,
   friendsCount: 312,
   about: [
     "Керамист. Делаю вазы и посуду вручную.",
@@ -106,35 +107,25 @@ export const LOLA_PROFILE: ProfileData = {
   ],
   posts: [
     {
+      id: "l2",
+      text: "Новая глава. С новым годом! ✨\n\nТри года я лепила дома, превращая кухню в мастерскую, а теперь... у меня есть своя студия! 🏺🤍\n\nЭто было маленькое, но очень важное решение — начать новый год с расширения своих возможностей. Теперь у меня есть пространство, где я могу творить, пачкать всё глиной и создавать больше красоты для вас.\n\nХочу сказать огромное спасибо тем, кто помогал мне на этом пути:\n❤️ Моим родителям — за веру в меня.\n❤️ Моей сестре — за поддержку.\n❤️ И, конечно, Кристине — самой лучшей подруге, которая всегда рядом и заряжает меня энергией.\n\nМечты сбываются, если в них верить и много работать. Добро пожаловать в мою новую творческую мастерскую! 🥂",
+      time: "2 января 2026 в 12:00",
+      likes: 0,
+      comments: 0,
+      reposts: 0,
+      views: "1",
+      image: image("lola-upload-2.jpeg"),
+    },
+    {
       id: "l1",
       pinned: true,
-      text: "Друзья! Приглашаю в нашу мастерскую «ГЛИНА» 🏺\n\nНовая серия ваз в тёплом беже с крапинками уже после обжига. Приходите обниматься, пить какао из новых кружек и забирать тепло с собой.\n\nПишите в личку, кто хочет зайти в гости 🤍",
-      time: "5 мар в 19:42",
-      likes: 342,
-      comments: 58,
-      reposts: 21,
-      views: "12К",
-      image: lolaStudio,
-    },
-    {
-      id: "l2",
-      text: "Новая коллекция «Песок и молоко» уже на полках ✨\n\nМолочный обжиг, крапинки шамота, ничего лишнего. Делаю новую партию ваз — хочется выйти на сотрудничество с магазинами 🙏",
-      time: "28 фев в 14:07",
-      likes: 218,
-      comments: 34,
-      reposts: 9,
-      views: "8,1К",
-      image: lolaVases,
-    },
-    {
-      id: "l3",
-      text: "Иногда глина слушается. Иногда — нет.\nСегодня — слушалась.\n\nСвежие кружки только достала из печи 🤍",
-      time: "19 фев в 21:15",
-      likes: 196,
-      comments: 22,
-      reposts: 4,
-      views: "6,4К",
-      image: lolaMugs,
+      text: "Каждое изделие - уникально, как и вы. Вазы, кружки, посуда — все создается с любовью и вниманием к деталям. Принимаю заказы на индивидуалные изделия и повторы коллекций.\n\nДля заказа пишите в сообщения или в мой Телеграмм - @LolaMaster",
+      time: "5 января 2026 в 10:00",
+      likes: 0,
+      comments: 0,
+      reposts: 0,
+      views: "1",
+      image: image("lola-order.jpg"),
     },
   ],
   dialogs: [
@@ -625,9 +616,8 @@ export const LOLA_PROFILE: ProfileData = {
   ],
   photos: [
     { src: lolaAvatar },
-    { src: lolaStudio },
-    { src: lolaVases },
-    { src: lolaMugs },
+    { src: image("lola-upload-1.jpeg") },
+    { src: image("lola-upload-2.jpeg") },
   ],
 };
 
@@ -635,7 +625,7 @@ export const VIKTOR_PROFILE: ProfileData = {
   id: "viktor",
   firstName: "Виктор",
   lastName: "Громов",
-  status: "Адвокат. Уголовные и арбитражные дела. Консультации — в личных сообщениях.",
+  status: "Telegram: @VictorAdvokat",
   onlineText: "online",
   city: "Москва",
   birthday: "2 июня 1981",
@@ -646,7 +636,7 @@ export const VIKTOR_PROFILE: ProfileData = {
   coverTo: "#4c1d95",
   coverEmoji: "⚖️",
   followers: "1 874",
-  photosCount: 1,
+  photosCount: 4,
   friendsCount: 428,
   about: [
     "Практикующий адвокат, 20 лет в профессии.",
@@ -654,40 +644,44 @@ export const VIKTOR_PROFILE: ProfileData = {
   ],
   posts: [
     {
-      id: "v1",
-      text: "Завершили сложное дело, длившееся почти год. Оправдательный приговор.\n\nДеталей по понятным причинам раскрыть не могу. Скажу одно: никогда не сдавайтесь раньше времени. Право — на стороне тех, кто борется.",
-      time: "сегодня в 9:12",
-      likes: 187,
-      comments: 41,
-      reposts: 12,
-      views: "9,3К",
-    },
-    {
-      id: "v2",
-      text: "12 лет вместе. 240 000 км. Три раза через всю страну.\nМоя старушка снова на ходу — спасибо ребятам из сервиса, что вернули её к жизни. 🚗\n\nЕсть тут ещё ценители, кто не меняет верного коня на новое?",
-      time: "10 ноя в 18:03",
-      likes: 264,
-      comments: 87,
-      reposts: 6,
-      views: "11К",
+      id: "v4",
+      text: "За юридическими услугами — напрямую в Telegram: @VictorAdvokat. Лично. Без посредников. ⚖️",
+      time: "19 февраля 2025",
+      likes: 595,
+      comments: 0,
+      reposts: 0,
+      views: "1",
+      pinned: true,
     },
     {
       id: "v3",
-      text: "Напоминаю клиентам: с 1 ноября изменился порядок подачи апелляций. Если у кого-то сроки горят — пишите секретарю Анне, разберём в приоритетном порядке.",
-      time: "3 ноя в 10:25",
-      likes: 98,
-      comments: 15,
-      reposts: 18,
-      views: "5,2К",
+      text: "Новая машина. Новые планы. Погнали 🚙✨",
+      time: "3 марта в 19:30",
+      likes: 384,
+      comments: 5,
+      reposts: 0,
+      views: "1",
+      image: image("виктор в машине.jfif"),
     },
     {
-      id: "v4",
-      text: "Выходные на даче. Баня, рыбалка, сын обыграл меня в шахматы. Так и должно быть.\nВ понедельник — снова в бой.",
-      time: "27 окт в 20:41",
-      likes: 312,
-      comments: 29,
-      reposts: 2,
-      views: "7,8К",
+      id: "v2",
+      text: "Спасибо Владиславу за его дачу: сосны, тишина и воздух, от которого кружится голова. Идеальные выходные.",
+      time: "1 марта в 18:01",
+      likes: 327,
+      comments: 3,
+      reposts: 0,
+      views: "1",
+      image: image("Виктор в лесу у дачи.jpeg"),
+    },
+    {
+      id: "v1",
+      text: "С Днем Рождения, любимый сын!",
+      time: "17 января в 13:01",
+      likes: 356,
+      comments: 6,
+      reposts: 0,
+      views: "1",
+      image: image("виктор леня др.jpeg"),
     },
   ],
   dialogs: [
@@ -823,7 +817,7 @@ export const VIKTOR_PROFILE: ProfileData = {
         { id: "m2", fromMe: true, text: "Скинул в почту. Только предупреди его, что срочно", time: "Вчера" },
       ],
     },
-  ],
+  ].filter((dialog) => dialog.id !== "d-anna" && dialog.id !== "d-igor"),
   friends: [
     { name: "Игорь Савельев", desc: "Однокурсник", initials: "ИС", color: "#6d28d9", online: false },
     { name: "Анна Соколова", desc: "«Громов и партнёры»", initials: "АС", color: "#7c3aed", online: true },
@@ -832,7 +826,12 @@ export const VIKTOR_PROFILE: ProfileData = {
     { name: "Елена Громова", desc: "Дочь", initials: "ЕГ", color: "#ec4899", online: false },
     { name: "Сергей Лавров", desc: "МГЮА '03", initials: "СЛ", color: "#8b5cf6", online: true },
   ],
-  photos: [{ src: viktorAvatar }],
+  photos: [
+    { src: viktorAvatar },
+    { src: image("виктор леня др.jpeg") },
+    { src: image("Виктор в лесу у дачи.jpeg") },
+    { src: image("виктор в машине.jfif") },
+  ],
 };
 
 const friendProfile = (id: "kristina" | "yana" | "lenya", firstName: string, lastName: string, avatar: string, status: string, city: string, work: string, education: string, about: string[], coverFrom: string, coverTo: string): ProfileData => ({
@@ -866,6 +865,33 @@ const friendProfile = (id: "kristina" | "yana" | "lenya", firstName: string, las
   photos: [{ src: avatar }, { src: LOLA_STUDIO }, { src: lolaVases }],
 });
 
-export const KRISTINA_PROFILE = friendProfile("kristina", "Кристина", "Белова", KRISTINA_AVATAR, "Люблю моменты, которые хочется запомнить ✨", "Москва", "Бьюти-блог и контент", "РГУ им. Косыгина", ["Делюсь находками, музыкой и кусочками своей жизни.", "Всегда за красивые планы и хорошую компанию ✨"], "#f472b6", "#8b5cf6");
+const kristinaBase = friendProfile("kristina", "Кристина", "Белова", KRISTINA_AVATAR, "Люблю моменты, которые хочется запомнить ✨", "Москва", "Бьюти-блог и контент", "РГУ им. Косыгина", ["Делюсь находками, музыкой и кусочками своей жизни.", "Всегда за красивые планы и хорошую компанию ✨"], "#f472b6", "#8b5cf6");
+
+export const KRISTINA_PROFILE: ProfileData = {
+  ...kristinaBase,
+  photos: [...kristinaBase.photos, { src: image("pasha-kristina.jpeg") }],
+  posts: [
+    {
+      id: "k-new-2",
+      text: "Молодые и счастливые",
+      time: "3 марта 2016 в 16:30",
+      likes: 0,
+      comments: 0,
+      reposts: 0,
+      views: "1",
+      image: image("pasha-kristina.jpeg"),
+    },
+    {
+      id: "k-new-1",
+      text: "🦋🦋🦋",
+      time: "9 апреля 2025",
+      likes: 0,
+      comments: 0,
+      reposts: 0,
+      views: "1",
+      images: [image("kristina-post-1.jpeg"), image("kristina-post-2.jpeg")],
+    },
+  ],
+};
 export const YANA_PROFILE = friendProfile("yana", "Яна", "Миронова", YANA_AVATAR, "Собираю близких за одним столом 🌸", "Москва", "Организатор мероприятий", "РАНХиГС", ["Сестра Лолы. Люблю уютные праздники, цветы и долгие разговоры.", "В любой непонятной ситуации — ставлю чайник ☕"], "#f59e0b", "#ec4899");
 export const LENYA_PROFILE = friendProfile("lenya", "Леонид", "Орлов", LENYA_AVATAR, "Музыка, город и немного тишины.", "Москва", "Звукорежиссёр", "Московский институт культуры", ["Работаю со звуком и живыми концертами.", "Предпочитаю говорить по делу."], "#3b82f6", "#6d28d9");
