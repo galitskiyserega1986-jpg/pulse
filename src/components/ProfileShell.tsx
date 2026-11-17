@@ -799,6 +799,9 @@ function PostCard({
   onLike: () => void;
   onImageClick: (src: string) => void;
 }) {
+  const portraitPhoto = profile.id === "kristina" && Boolean(image) && !images?.length;
+  const portraitGallery = profile.id === "kristina" && Boolean(images?.length);
+
   return (
     <article className="bg-white rounded-[16px] border border-purple-950/5 shadow-sm p-4 sm:p-5">
       <div className="flex items-center gap-2.5">
@@ -825,14 +828,14 @@ function PostCard({
       <p className="mt-3 text-[14px] leading-relaxed text-[#221e33] whitespace-pre-line">{text.split(/(@VictorAdvokat)/g).map((part, index) => part === "@VictorAdvokat" ? <strong key={index}>{part}</strong> : part)}</p>
 
       {(images?.length ? images : image ? [image] : []).length > 0 && (
-        <div className={`mt-3 rounded-xl overflow-hidden border border-purple-950/5 ${images && images.length > 1 ? "grid grid-cols-2 gap-0.5" : ""}`}>
+        <div className={`mt-3 ${images && images.length > 1 ? portraitGallery ? "w-full max-w-[520px] mx-auto grid grid-cols-2 gap-1 rounded-xl overflow-hidden" : "grid grid-cols-2 gap-0.5 rounded-xl overflow-hidden border border-purple-950/5" : portraitPhoto ? "w-full max-w-[520px] aspect-[7/10] mx-auto rounded-xl overflow-hidden border border-purple-950/5 bg-[#f1eff6]" : "rounded-xl overflow-hidden border border-purple-950/5"}`}>
           {(images?.length ? images : image ? [image] : []).map((src) => (
             <img
               key={src}
               src={src}
               alt=""
               onClick={() => onImageClick(src)}
-              className="w-full max-h-[380px] object-cover hover:scale-[1.01] transition duration-500 cursor-pointer"
+              className={portraitGallery ? "w-full aspect-[3/4] object-cover rounded-xl border border-purple-950/5 hover:scale-[1.01] transition duration-500 cursor-pointer" : portraitPhoto ? "w-full h-full object-cover hover:scale-[1.01] transition duration-500 cursor-pointer" : "w-full max-h-[380px] object-cover hover:scale-[1.01] transition duration-500 cursor-pointer"}
             />
           ))}
         </div>
