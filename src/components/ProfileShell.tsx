@@ -73,6 +73,34 @@ export function ProfileShell({
   const [viewedProfile, setViewedProfile] = useState<ProfileData | null>(null);
   const pageProfile = viewedProfile ?? profile;
 
+  // Стена: закреплённый пост всегда первый
+  type WallPostItem = {
+    id: string;
+    text: string;
+    time: string;
+    likes: number;
+    comments: number;
+    reposts: number;
+    views: string;
+    image?: string;
+    images?: string[];
+    pinned?: boolean;
+    fresh?: boolean;
+  };
+  const wallPosts: WallPostItem[] = [
+    ...(viewedProfile ? [] : extraPosts.map((p): WallPostItem => ({ id: p.id, text: p.text, time: p.time, likes: 0, comments: 0, reposts: 0, views: "1", fresh: true, pinned: false }))),
+    ...pageProfile.posts.map((p): WallPostItem => ({ ...p })),
+  ].sort((a, b) => Number(b.pinned ?? false) - Number(a.pinned ?? false));
+
+  // Мобильная версия: «Чаты» открывает список диалогов, чат — только после выбора диалога
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
+  const openMessagesTab = () => { setTab("messages"); setMobileChatOpen(false); };
+  const openDialog = (id: string) => {
+    setActiveId(id);
+    setMobileChatOpen(true);
+    setDialogs((prev) => prev.map((x) => (x.id === id ? { ...x, unread: 0 } : x)));
+  };
+
   const openFriendPage = (name: string) => {
     const normalized = name.toLowerCase();
     const friend = normalized.includes("кристин") ? KRISTINA_PROFILE : normalized.includes("ян") ? YANA_PROFILE : normalized.includes("лён") || normalized.includes("леон") || normalized.includes("лен") ? LENYA_PROFILE : null;
@@ -257,7 +285,7 @@ export function ProfileShell({
                   <button
                     key={i + n.label}
                     type="button"
-                    onClick={() => target === "profile" ? goToMyPage() : setTab(target)}
+                    onClick={() => target === "profile" ? goToMyPage() : target === "messages" ? openMessagesTab() : setTab(target)}
                     className={`w-full flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium transition ${
                       isActive
                         ? "bg-white shadow-sm text-[#1e1b2e] font-semibold"
@@ -339,7 +367,7 @@ export function ProfileShell({
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <button
-                        onClick={() => setTab("messages")}
+                        onClick={() => openMessagesTab()}
                         className="h-[36px] px-4 rounded-lg bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-[13.5px] font-bold flex items-center gap-1.5 transition"
                       >
                         <MessageCircle className="w-4 h-4" /> Сообщение
@@ -434,30 +462,14 @@ export function ProfileShell({
                 </div>
               </div>}
 
-              {/* posts */}
-              {!viewedProfile && extraPosts.map((p) => (
+              {/* posts — закреплённый пост всегда первый */}
+              {wallPosts.map((p) => (
                 <PostCard
                   key={p.id}
                   profile={pageProfile}
                   text={p.text}
                   time={p.time}
-                  likes={0}
-                  comments={0}
-                  reposts={0}
-                  views="1"
-                  liked={liked.has(p.id)}
-                  bump={likeBump === p.id}
-                  onLike={() => toggleLike(p.id)}
-                  onImageClick={setLightboxSrc}
-                />
-              ))}
-              {pageProfile.posts.map((p) => (
-                <PostCard
-                  key={p.id}
-                  profile={pageProfile}
-                  text={p.text}
-                  time={p.time}
-                  likes={p.likes + (liked.has(p.id) ? 1 : 0)}
+                  likes={p.fresh ? 0 : p.likes + (liked.has(p.id) ? 1 : 0)}
                   comments={p.comments}
                   reposts={p.reposts}
                   views={p.views}
@@ -476,7 +488,7 @@ export function ProfileShell({
           {tab === "messages" && (
             <div className="bg-white rounded-[16px] border border-purple-950/5 shadow-sm overflow-hidden animate-fade-up min-h-[560px] flex flex-col md:flex-row">
               {/* list */}
-              <div className={`${activeId && typeof window !== "undefined" && window.innerWidth < 768 ? "hidden" : "flex"} md:flex w-full md:w-[320px] shrink-0 flex-col border-r border-purple-950/5`}>
+              <div className={`${mobileChatOpen ? "hidden" : "flex"} md:flex w-full md:w-[320px] shrink-0 flex-col border-r border-purple-950/5`}>
                 <div className="p-3 border-b border-purple-950/5">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9b95b0]" />
@@ -496,11 +508,8 @@ export function ProfileShell({
                         key={d.id}
                         role="button"
                         tabIndex={0}
-                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { setActiveId(d.id); setDialogs((prev) => prev.map((x) => (x.id === d.id ? { ...x, unread: 0 } : x))); } }}
-                        onClick={() => {
-                          setActiveId(d.id);
-                          setDialogs((prev) => prev.map((x) => (x.id === d.id ? { ...x, unread: 0 } : x)));
-                        }}
+                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { openDialog(d.id); } }}
+                        onClick={() => openDialog(d.id)}
                         className={`w-full flex gap-2.5 px-3 py-2.5 text-left transition hover:bg-purple-500/[.04] ${active?.id === d.id ? "bg-[#ede9fe]" : ""}`}
                       >
                         <div className="relative shrink-0 w-11 h-11 rounded-full overflow-hidden">
@@ -530,9 +539,9 @@ export function ProfileShell({
 
               {/* chat */}
               {active && (
-                <div className="flex-1 flex flex-col min-w-0">
+                <div className={`${mobileChatOpen ? "flex" : "hidden"} md:flex flex-1 flex-col min-w-0`}>
                   <div className="px-4 py-2.5 border-b border-purple-950/5 flex items-center gap-2.5 bg-white">
-                    <button className="md:hidden w-8 h-8 rounded-full hover:bg-purple-500/10 flex items-center justify-center" onClick={() => setActiveId("")}>
+                    <button className="md:hidden w-8 h-8 rounded-full hover:bg-purple-500/10 flex items-center justify-center" onClick={() => setMobileChatOpen(false)}>
                       <ArrowLeft className="w-5 h-5" />
                     </button>
                     <button onClick={() => openFriendPage(active.name)} className="w-9 h-9 rounded-full overflow-hidden shrink-0" aria-label={`Профиль: ${active.name}`}>
@@ -574,7 +583,7 @@ export function ProfileShell({
                                 src={m.image}
                                 alt=""
                                 onClick={() => setLightboxSrc(m.image!)}
-                                className="mb-2 rounded-xl max-h-[240px] w-full object-cover cursor-pointer hover:opacity-95 transition"
+                                className="mb-2 rounded-xl max-h-[240px] w-full object-contain cursor-pointer hover:opacity-95 transition"
                               />
                             )}
                             <div className="whitespace-pre-line">{m.text}</div>
@@ -619,17 +628,17 @@ export function ProfileShell({
                 <h2 className="font-extrabold text-[17px] text-[#1e1b2e]">Фотографии {profile.firstName}</h2>
                 <span className="text-[13px] text-[#9b95b0] font-medium">{profile.photos.length}</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 items-start">
                 {profile.photos.map((ph, i) => (
                   <div
                     key={i}
                     onClick={() => setLightboxSrc(ph.src)}
-                    className="aspect-square rounded-xl overflow-hidden cursor-pointer bg-[#f1eff6]"
+                    className="rounded-xl overflow-hidden cursor-pointer bg-[#f1eff6]"
                   >
                     <img
                       src={ph.src}
                       alt=""
-                      className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                      className="block w-full h-auto hover:scale-[1.03] transition duration-500"
                     />
                   </div>
                 ))}
@@ -655,7 +664,7 @@ export function ProfileShell({
                 <button
                   key={n.t}
                   type="button"
-                  onClick={() => target === "profile" ? goToMyPage() : setTab(target)}
+                  onClick={() => target === "profile" ? goToMyPage() : target === "messages" ? openMessagesTab() : setTab(target)}
                   className={`flex-1 flex flex-col items-center gap-[2px] py-2 relative ${tab === target ? "text-[#7c3aed]" : "text-[#9b95b0]"}`}
                 >
                   <n.icon className="w-[22px] h-[22px]" />
@@ -799,12 +808,11 @@ function PostCard({
   onLike: () => void;
   onImageClick: (src: string) => void;
 }) {
-  const portraitPhoto = profile.id === "kristina" && Boolean(image) && !images?.length;
-  const portraitGallery = profile.id === "kristina" && Boolean(images?.length);
+  const imgs = images?.length ? images : image ? [image] : [];
 
   return (
-    <article className="bg-white rounded-[16px] border border-purple-950/5 shadow-sm p-4 sm:p-5">
-      <div className="flex items-center gap-2.5">
+    <article className="bg-white rounded-[16px] border border-purple-950/5 shadow-sm overflow-hidden">
+      <div className="px-4 sm:px-5 pt-4 flex items-center gap-2.5">
         <img src={profile.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
         <div className="min-w-0">
           <div className="font-bold text-[14px] text-[#1e1b2e] flex items-center gap-1">
@@ -825,23 +833,34 @@ function PostCard({
         </div>
       </div>
 
-      <p className="mt-3 text-[14px] leading-relaxed text-[#221e33] whitespace-pre-line">{text.split(/(@VictorAdvokat)/g).map((part, index) => part === "@VictorAdvokat" ? <strong key={index}>{part}</strong> : part)}</p>
-
-      {(images?.length ? images : image ? [image] : []).length > 0 && (
-        <div className={`mt-3 ${images && images.length > 1 ? portraitGallery ? "w-full max-w-[520px] mx-auto grid grid-cols-2 gap-1 rounded-xl overflow-hidden" : "grid grid-cols-2 gap-0.5 rounded-xl overflow-hidden border border-purple-950/5" : portraitPhoto ? "w-full max-w-[520px] aspect-[7/10] mx-auto rounded-xl overflow-hidden border border-purple-950/5 bg-[#f1eff6]" : "rounded-xl overflow-hidden border border-purple-950/5"}`}>
-          {(images?.length ? images : image ? [image] : []).map((src) => (
-            <img
-              key={src}
-              src={src}
-              alt=""
-              onClick={() => onImageClick(src)}
-              className={portraitGallery ? "w-full aspect-[3/4] object-cover rounded-xl border border-purple-950/5 hover:scale-[1.01] transition duration-500 cursor-pointer" : portraitPhoto ? "w-full h-full object-cover hover:scale-[1.01] transition duration-500 cursor-pointer" : "w-full max-h-[380px] object-cover hover:scale-[1.01] transition duration-500 cursor-pointer"}
-            />
-          ))}
-        </div>
+      {imgs.length > 0 && (
+        imgs.length > 1 ? (
+          <div className="mt-3 grid grid-cols-2 gap-[2px] items-start">
+            {imgs.map((src) => (
+              <img
+                key={src}
+                src={src}
+                alt=""
+                onClick={() => onImageClick(src)}
+                className="block w-full h-auto cursor-pointer hover:brightness-[1.04] transition duration-500"
+              />
+            ))}
+          </div>
+        ) : (
+          <img
+            src={imgs[0]}
+            alt=""
+            onClick={() => onImageClick(imgs[0])}
+            className="mt-3 block w-full h-auto cursor-pointer hover:brightness-[1.04] transition duration-500"
+          />
+        )
       )}
 
-      <div className="mt-3.5 flex items-center gap-1 text-[13px] font-semibold text-[#6b6580]">
+      <div className="px-4 sm:px-5 pt-3">
+        <p className="text-[14px] leading-relaxed text-[#221e33] whitespace-pre-line">{text.split(/(@VictorAdvokat)/g).map((part, index) => part === "@VictorAdvokat" ? <strong key={index}>{part}</strong> : part)}</p>
+      </div>
+
+      <div className="px-4 sm:px-5 pb-4 pt-2 flex items-center gap-1 text-[13px] font-semibold text-[#6b6580]">
         <button
           onClick={onLike}
           className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition active:scale-95 ${
